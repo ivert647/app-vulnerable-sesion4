@@ -16,8 +16,12 @@ def buscar():
 @app.route("/calcular")
 def calcular():
     expresion = request.args.get("expr")
-    # Uso inseguro de eval (SAST)
-    return str(eval(expresion))
+
+    try:
+        resultado = float(expresion)
+        return str(resultado)
+    except ValueError:
+        return "Expresión no válida", 400
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)
